@@ -1,16 +1,29 @@
+"use client";
+
+import { Public_Sans } from "next/font/google";
+import Navbar from "@/components/Navbar/Navbar";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import SidebarDropdownItem from "@/components/Sidebar/SidebarDropdownItem";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import SidebarSection from "@/components/Sidebar/SidebarSection";
+import { useSidebarStore } from "@/store";
+
+const publicSans = Public_Sans({
+  subsets: ["latin"],
+});
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const sidebarIsOpen = useSidebarStore((state) => state.isOpen);
+
   return (
-    <>
+    <body
+      className={`${publicSans.className} ${sidebarIsOpen ? "overflow-hidden" : "overflow-auto"}`}
+    >
       <Sidebar>
         <SidebarSection title="overview">
           <SidebarItem href="/admin/" icon="dashboard" title="App" />
@@ -64,7 +77,10 @@ export default function AdminLayout({
           </SidebarDropdown>
         </SidebarSection>
       </Sidebar>
-      <main className="h-[2000px]">{children}</main>
-    </>
+      <div className="xl:pl-75">
+        <Navbar />
+        <main className="h-[2000px]">{children}</main>
+      </div>
+    </body>
   );
 }
