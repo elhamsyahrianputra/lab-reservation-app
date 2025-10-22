@@ -28,7 +28,12 @@ export default function SidebarWrapper({ children }: SidebarWrapperProps) {
         }`}
       >
         <div className="pt-5 pb-2 pl-7">
-          <Image src="/img/logo/logo-blue.svg" height={40} width={40} alt="Logo" />
+          <Image
+            src="/img/logo/logo-blue.svg"
+            height={40}
+            width={40}
+            alt="Logo"
+          />
         </div>
         <div className="relative z-1000 flex h-full w-72 flex-col border-r border-r-grey-500/12 bg-white xl:w-75">
           <nav className="flex-1">

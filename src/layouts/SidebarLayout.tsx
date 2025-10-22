@@ -3,9 +3,8 @@ import { Sidebar } from "@/components/layouts/Sidebar";
 export default function SidebarLayout() {
   return (
     <Sidebar.Wrapper>
-
       <Sidebar.Section title="Dashboard">
-        <Sidebar.Item title="Dashboard" icon="dashboard" href="/admin" />
+        <Sidebar.Item title="Dashboard" icon="dashboard" href="/dashboard" />
       </Sidebar.Section>
 
       <Sidebar.Section title="Reservation">
@@ -19,7 +18,6 @@ export default function SidebarLayout() {
 
       <Sidebar.Section title="Equipments">
         <Sidebar.Item title="Equipment" icon="case" href="/admin/equipments" />
-        
       </Sidebar.Section>
     </Sidebar.Wrapper>
   );

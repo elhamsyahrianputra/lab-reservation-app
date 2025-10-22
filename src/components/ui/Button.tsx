@@ -1,6 +1,7 @@
 import type { HasColorProp } from "@/types/color.types";
 
 interface ButtonProps extends HasColorProp {
+  type?: "button" | "submit";
   children: React.ReactNode;
 }
 
@@ -23,12 +24,16 @@ const buttonStyleMap: Record<
   dark: { background: "bg-grey-800", text: TEXT.LIGHT },
 };
 
-export default function Button({ color = "primary", children }: ButtonProps) {
+export default function Button({
+  color = "primary",
+  type = "button",
+  children,
+}: ButtonProps) {
   const colorClass = buttonStyleMap[color];
 
   return (
     <button
-      type="submit"
+      type={type}
       className={`${colorClass.background} ${colorClass.text} flex min-h-12 items-center justify-center rounded-lg px-4 py-2 font-bold text-[15px] duration-250 ease-[cubic-bezier(0.4,0,0.2,1)] hover:opacity-85`}
     >
       {children}

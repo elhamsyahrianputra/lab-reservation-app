@@ -1,9 +1,41 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { type FormEvent, useState } from "react";
 import InputText from "@/components/form/Input";
 import Button from "@/components/ui/Button";
 
 export default function Page() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const user = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("auth_token", user.data.auth_token);
+      redirect("/dashboard");
+    } else {
+      console.log(user.message);
+    }
+  }
+
   return (
     <div className="flex lg:h-dvh">
       <div className="hidden max-w-120 flex-1 flex-col items-center justify-center bg-gradient-to-br from-white to-grey-200 lg:flex">
@@ -37,9 +69,15 @@ export default function Page() {
             </Link>
           </span>
         </div>
+
         <div>
-          <form action="" className="mt-10 flex flex-col gap-6">
-            <InputText label="Email Address" placeholder="example@gmail.com" />
+          <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-6">
+            <InputText
+              label="Email Address"
+              placeholder="example@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
             <div className="flex flex-col gap-3">
               <Link href="#" className="self-end text-sm">
@@ -49,10 +87,14 @@ export default function Page() {
                 label="Password"
                 placeholder="8+ Characters"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
-            <Button color="dark">Login</Button>
+            <Button type="submit" color="dark">
+              Login
+            </Button>
           </form>
         </div>
       </div>

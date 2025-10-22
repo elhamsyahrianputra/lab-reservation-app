@@ -1,9 +1,42 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { type FormEvent, useState } from "react";
 import InputText from "@/components/form/Input";
 import Button from "@/components/ui/Button";
 
 export default function Page() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:3001/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+
+    const user = await response.json();
+
+    if (response.ok) {
+      redirect("/login");
+    } else {
+      console.log(user.message);
+    }
+  }
+
   return (
     <div className="flex lg:h-dvh">
       <div className="hidden max-w-120 flex-1 flex-col items-center justify-center bg-gradient-to-br from-white to-grey-200 lg:flex">
@@ -38,22 +71,31 @@ export default function Page() {
           </span>
         </div>
         <div>
-          <form action="" className="mt-10 flex flex-col gap-6">
-            <div className="grid grid-cols-2 justify-between gap-x-4">
-              <InputText label="First Name" />
-              <InputText label="Last Name" />
-            </div>
-            <InputText label="Email Address" placeholder="example@gmail.com" />
+          <form onSubmit={handleSubmit} className="mt-10 flex flex-col gap-6">
+            <InputText
+              label="Name"
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Angelina Christy"
+            />
+
+            <InputText
+              label="Email Address"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@gmail.com"
+            />
 
             <div className="flex flex-col gap-3">
               <InputText
                 label="Password"
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="8+ Characters"
                 type="password"
               />
             </div>
 
-            <Button color="dark">Create an Account</Button>
+            <Button type="submit" color="dark">
+              Create an Account
+            </Button>
           </form>
         </div>
       </div>
